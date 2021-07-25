@@ -7,7 +7,7 @@ spec:
   selector:
     matchLabels:
       app: frontend
-  replicas: 1
+  replicas: {{ .Values.app.frontend.replicaCount }}
   template: 
     metadata:
       labels:
@@ -15,8 +15,8 @@ spec:
     spec:
       containers:
       - name: frontend-container
-        image: tmdwn0704/frontend:test
-        imagePullPolicy: Always
+        image: {{ .Values.image.repository }}/frontend:{{ .Values.image.tag }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
         - containerPort: 3000
 

@@ -7,7 +7,7 @@ spec:
   selector:
     matchLabels:
       app: gateway
-  replicas: 1
+  replicas: {{ .Values.app.apiGateWay.replicaCount }}
   template: 
     metadata:
       labels:
@@ -15,8 +15,8 @@ spec:
     spec:
       containers:
       - name: api-gateway-container
-        image: tmdwn0704/gateway-service:test
-        imagePullPolicy: Always
+        image: {{ .Values.image.repository}}/gateway-service:{{ .Values.image.tag }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
         - containerPort: 8000
         envFrom: 

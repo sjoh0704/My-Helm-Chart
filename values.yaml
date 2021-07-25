@@ -1,13 +1,13 @@
 image:
   repository: "tmdwn0704"
   pullPolicy: Always
-  tag: "latest"
+  tag: "test69"
 
 app:
   frontend:
     replicaCount: 1
   user:
-    replicaCount: 1
+    replicaCount: 2
   product:
     replicaCount: 1
   order:

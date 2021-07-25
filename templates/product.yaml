@@ -7,7 +7,7 @@ spec:
   selector:
     matchLabels:
       app: product
-  replicas: 1
+  replicas: {{ .Values.app.product.replicaCount }}
   template: 
     metadata:
       labels:
@@ -15,8 +15,8 @@ spec:
     spec:
       containers:
       - name: product-api-container
-        image: tmdwn0704/product-service:test
-        imagePullPolicy: Always
+        image: {{ .Values.image.repository }}/product-service:{{ .Values.image.tag }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
         - containerPort: 8000
         envFrom: 

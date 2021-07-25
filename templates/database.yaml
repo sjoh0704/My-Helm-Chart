@@ -41,7 +41,7 @@ kind: Deployment
 metadata:
   name: mysql-user
 spec:
-  replicas: 1
+  replicas: {{ .Values.database.user.replicaCount }}
   selector:
     matchLabels:
       db: mysql-user
@@ -72,7 +72,7 @@ kind: Deployment
 metadata:
   name: mysql-product
 spec:
-  replicas: 1
+  replicas: {{ .Values.database.product.replicaCount }}
   selector:
     matchLabels:
       db: mysql-product
@@ -103,7 +103,7 @@ kind: Deployment
 metadata:
   name: mysql-order
 spec:
-  replicas: 1
+  replicas: {{ .Values.database.order.replicaCount }}
   selector:
     matchLabels:
       db: mysql-order

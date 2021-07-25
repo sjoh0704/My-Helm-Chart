@@ -7,7 +7,7 @@ spec:
   selector:
     matchLabels:
       app: order
-  replicas: 1
+  replicas: {{ .Values.app.order.replicaCount }}
   template: 
     metadata:
       labels:
@@ -15,8 +15,8 @@ spec:
     spec:
       containers:
       - name: order-api-container
-        image: tmdwn0704/order-service:test
-        imagePullPolicy: Always
+        image: {{ .Values.image.repository }}/order-service:{{ .Values.image.tag }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
         - containerPort: 8000
         envFrom: 
