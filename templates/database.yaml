@@ -1,0 +1,130 @@
+
+# db-service
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-user-service
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+  selector:
+    db: mysql-user
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-product-service
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+  selector:
+    db: mysql-product
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-order-service
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+  selector:
+    db: mysql-order
+
+---
+
+# database deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-user
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      db: mysql-user
+  template:
+    metadata:
+      labels:
+        db: mysql-user
+    spec:
+      containers:
+      - image: mysql:5.6
+        name: mysql
+        envFrom: 
+        - configMapRef:
+            name: database
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: nfs-user-pvc
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-product
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      db: mysql-product
+  template:
+    metadata:
+      labels:
+        db: mysql-product
+    spec:
+      containers:
+      - image: mysql:5.6
+        name: mysql
+        envFrom: 
+        - configMapRef:
+            name: database
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: nfs-product-pvc
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-order
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      db: mysql-order
+  template:
+    metadata:
+      labels:
+        db: mysql-order
+    spec:
+      containers:
+      - image: mysql:5.6
+        name: mysql
+        envFrom: 
+        - configMapRef:
+            name: database
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: nfs-order-pvc

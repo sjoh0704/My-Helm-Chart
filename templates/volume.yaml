@@ -1,0 +1,95 @@
+
+# persistentvolume 
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-user-pvc
+  labels:
+    db: user
+spec:
+  capacity:
+    storage: 3Gi
+  volumeMode: Filesystem
+  accessModes: 
+  - ReadWriteMany
+  nfs:
+    path: "/data/mysql-user"
+    server: 172.31.6.27
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-product-pvc
+  labels:
+    db: product
+spec:
+  capacity:
+    storage: 3Gi
+  volumeMode: Filesystem
+  accessModes: 
+  - ReadWriteMany
+  nfs:
+    path: "/data/mysql-product"
+    server: 172.31.6.27
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-order-pv
+  labels:
+    db: order
+spec:
+  capacity:
+    storage: 3Gi
+  volumeMode: Filesystem
+  accessModes: 
+  - ReadWriteMany
+  nfs:
+    path: "/data/mysql-order"
+    server: 172.31.6.27
+
+---
+# persistentVolumeClaim
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-user-pvc
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 3Gi
+  selector: 
+    matchLabels: 
+      db: user
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-product-pvc
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 3Gi
+  selector: 
+    matchLabels: 
+      db: product
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-order-pvc
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 3Gi
+  selector: 
+    matchLabels: 
+      db: order
