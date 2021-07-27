@@ -9,11 +9,11 @@ app:
   user:
     replicaCount: 2
   product:
-    replicaCount: 1
+    replicaCount: 2
   order:
-    replicaCount: 1
+    replicaCount: 2
   apiGateWay:
-    replicaCount: 1
+    replicaCount: 2
 
 database:
   user:
