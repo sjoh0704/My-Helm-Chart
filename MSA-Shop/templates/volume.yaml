@@ -14,7 +14,7 @@ spec:
   - ReadWriteMany
   nfs:
     path: "/data/mysql-user"
-    server: 172.31.6.27
+    server: {{ .Values.nfs }}
 ---
 
 apiVersion: v1
@@ -31,7 +31,7 @@ spec:
   - ReadWriteMany
   nfs:
     path: "/data/mysql-product"
-    server: 172.31.6.27
+    server: {{ .Values.nfs }}
 ---
 
 apiVersion: v1
@@ -48,8 +48,7 @@ spec:
   - ReadWriteMany
   nfs:
     path: "/data/mysql-order"
-    server: 172.31.6.27
-
+    server: {{ .Values.nfs }}
 ---
 # persistentVolumeClaim
 apiVersion: v1
