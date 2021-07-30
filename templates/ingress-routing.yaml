@@ -1,0 +1,68 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: ingress-gateway-configuration
+spec:
+  selector:
+    istio: ingressgateway # use Istio default gateway implementation
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"   # Domain name of the external website
+---
+kind: VirtualService
+apiVersion: networking.istio.io/v1alpha3
+metadata:
+  name: front-virtual-service
+  namespace: default
+spec:
+  hosts:      # which incoming host are we applying the proxy rules to???
+    - "*" # Copy the value in the gateway hosts - usually a Domain Name
+  gateways:
+    - ingress-gateway-configuration
+  http:
+  - match:
+    - headers:
+        user: 
+          exact: admin
+      uri:
+        prefix: "/admin/order"
+    rewrite:
+      uri: "/admin/order"
+    route: # THEN
+    - destination: 
+        host: order-api-service.default.svc.cluster.local
+  - match:
+    - headers:
+        user:
+          exact: admin
+      uri:
+        prefix: "/admin/user"
+    rewrite:
+      uri: "/admin/user"
+
+    route: # THEN
+    - destination:
+        host: user-api-service.default.svc.cluster.local
+  - match:
+    - headers:
+        user:
+          exact: admin
+      uri:
+        prefix: "/admin/item"
+    rewrite:
+      uri: "/admin/item"
+
+    route: # THEN
+    - destination:
+        host: product-api-service.default.svc.cluster.local
+
+  - match:
+    - uri:
+        prefix: "/"
+    route:
+    - destination:
+        host: frontend-service.default.svc.cluster.local
