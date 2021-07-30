@@ -1,7 +1,7 @@
 image:
   repository: "tmdwn0704"
   pullPolicy: Always
-  tag: "test69"
+  tag: "test70"
 
 app:
   frontend:
