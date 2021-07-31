@@ -59,6 +59,15 @@ spec:
     route: # THEN
     - destination:
         host: product-api-service.default.svc.cluster.local
+  - match:
+    - headers: 
+        user:
+          exact: admin 
+      uri:
+        prefix: "/"
+    route:
+    - destination:
+        host: grafana.istio-system.svc.cluster.local
 
   - match:
     - uri:
