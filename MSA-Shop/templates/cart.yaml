@@ -1,0 +1,53 @@
+# cart-api-server
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cart-api-server
+spec:
+  selector:
+    matchLabels:
+      app: cart
+  replicas: {{ .Values.app.cart.replicaCount }}
+  template: 
+    metadata:
+      labels:
+        app: cart
+    spec:
+      containers:
+      - name: cart-api-container
+        image: {{ .Values.image.repository }}/cart-service:{{ .Values.image.tag }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: 8000
+        envFrom: 
+        - configMapRef:
+            name: service-url
+        - configMapRef:
+            name: app-db-setting
+        
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 80
+          periodSeconds: 10
+          
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 80
+          periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name:  cart-api-service
+spec:
+  selector:
+    app: cart
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP

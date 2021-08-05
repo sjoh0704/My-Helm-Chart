@@ -13,7 +13,10 @@ app:
   order:
     replicaCount: 2
   apiGateWay:
-    replicaCount: 2
+    replicaCount: 1
+  cart:
+    replicaCount: 1
+
 
 database:
   user:
@@ -22,5 +25,8 @@ database:
     replicaCount: 1
   order:
     replicaCount: 1
+  cart:
+    replicaCount: 1
+
 
 nfs: 10.0.2.116

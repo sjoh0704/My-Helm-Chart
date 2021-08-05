@@ -32,6 +32,17 @@ spec:
     targetPort: 3306
   selector:
     db: mysql-order
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-cart-service
+spec:
+  ports:
+  - port: 27017
+    targetPort: 27017
+  selector:
+    db: mongo-cart
 
 ---
 
@@ -128,3 +139,36 @@ spec:
       - name: mysql-persistent-storage
         persistentVolumeClaim:
           claimName: nfs-order-pvc
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-cart
+spec:
+  replicas: {{ .Values.database.order.replicaCount }}
+  selector:
+    matchLabels:
+      db: mongo-cart
+  template:
+    metadata:
+      labels:
+        db: mongo-cart
+    spec:
+      containers:
+      - image: mongo
+        name: mongo
+        envFrom: 
+        - configMapRef:
+            name: database
+        ports:
+        - containerPort: 27017
+          name: mongodb
+        volumeMounts:
+        - name: mongo-persistent-storage
+          mountPath: /data/db
+      volumes:
+      - name: mongo-persistent-storage
+        persistentVolumeClaim:
+          claimName: nfs-cart-pvc

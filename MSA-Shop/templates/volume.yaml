@@ -49,6 +49,24 @@ spec:
   nfs:
     path: "/data/mysql-order"
     server: {{ .Values.nfs }}
+
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-cart-pv
+  labels:
+    db: cart
+spec:
+  capacity:
+    storage: 3Gi
+  volumeMode: Filesystem
+  accessModes: 
+  - ReadWriteMany
+  nfs:
+    path: "/data/mongo-cart"
+    server: {{ .Values.nfs }}
 ---
 # persistentVolumeClaim
 apiVersion: v1
@@ -92,3 +110,17 @@ spec:
   selector: 
     matchLabels: 
       db: order
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-mongo-pvc
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 3Gi
+  selector: 
+    matchLabels: 
+      db: cart
