@@ -14,6 +14,9 @@ app:
     replicaCount: 2
   apiGateWay:
     replicaCount: 2
+  cart:
+    replicaCount: 1
+
 
 database:
   user:
@@ -21,6 +24,8 @@ database:
   product:
     replicaCount: 1
   order:
+    replicaCount: 1
+  cart:
     replicaCount: 1
 
 
