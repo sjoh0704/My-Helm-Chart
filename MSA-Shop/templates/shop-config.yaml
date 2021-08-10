@@ -10,7 +10,7 @@ data:
   USER_SERVICE_URL: 'http://user-api-service:8080'
   APIGATWAY_URL: 'http://api-gateway-service:8080'
   FRONTEND_URL: 'http://frontend-service:8080'
-  CART_URL: 'http://cart-service:8080'
+  CART_URL: 'http://cart-api-service:8080'
   
 ---
 # app-db-setting

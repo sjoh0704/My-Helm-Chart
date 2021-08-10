@@ -9,11 +9,11 @@ app:
   user:
     replicaCount: 2
   product:
-    replicaCount: 2
+    replicaCount: 1
   order:
-    replicaCount: 2
+    replicaCount: 1
   apiGateWay:
-    replicaCount: 2
+    replicaCount: 1
   cart:
     replicaCount: 1
 
@@ -28,4 +28,4 @@ database:
   cart:
     replicaCount: 1
 
-
+nfs: 10.0.2.116
