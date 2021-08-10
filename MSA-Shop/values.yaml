@@ -28,11 +28,14 @@ database:
     replicaCount: 1
 
 hpa:
+  frontend:
+    maxReplicas: 3
+    minReplicas: 1
+    targetValue: 5
   apiGateway:
     maxReplicas: 3
     minReplicas: 1
     targetValue: 5
-
   user:
     maxReplicas: 3
     minReplicas: 1
