@@ -1,7 +1,7 @@
 image:
   repository: "tmdwn0704"
   pullPolicy: Always
-  tag: "test70"
+  tag: "test77"
 
 app:
   frontend:
@@ -9,14 +9,13 @@ app:
   user:
     replicaCount: 2
   product:
-    replicaCount: 2
+    replicaCount: 1
   order:
-    replicaCount: 2
+    replicaCount: 1
   apiGateWay:
     replicaCount: 1
   cart:
     replicaCount: 1
-
 
 database:
   user:
@@ -27,6 +26,30 @@ database:
     replicaCount: 1
   cart:
     replicaCount: 1
+
+hpa:
+  api-gateway:
+    maxReplicas: 3
+    minReplicas: 1
+    targetValue: 5
+
+  user:
+    maxReplicas: 3
+    minReplicas: 1
+    targetValue: 5
+  product:
+    maxReplicas: 3
+    minReplicas: 1
+    targetValue: 5
+  order:
+    maxReplicas: 3
+    minReplicas: 1
+    targetValue: 5
+  cart:
+    maxReplicas: 3
+    minReplicas: 1
+    targetValue: 5
+
 
 
 nfs: 10.0.2.116

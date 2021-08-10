@@ -10,7 +10,7 @@ data:
   USER_SERVICE_URL: 'http://user-api-service:8080'
   APIGATWAY_URL: 'http://api-gateway-service:8080'
   FRONTEND_URL: 'http://frontend-service:8080'
-  CART_URL: 'http://cart-api-service:8080'
+  CART_SERVICE_URL: 'http://cart-api-service:8080'
   
 ---
 # app-db-setting
@@ -29,7 +29,7 @@ data:
   MYSQL_USER_HOST: 'mysql-user-service'
   MYSQL_PRODUCT_HOST: 'mysql-product-service'
   MYSQL_ORDER_HOST: 'mysql-order-service'
-  MONGO_CART_HOST: 'mongo-cart-service'
+  MONGO_CART_HOST: 'mongo-cart-service:27017'
 ---
 # db 환경변수  
 

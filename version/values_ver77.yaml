@@ -1,7 +1,7 @@
 image:
   repository: "tmdwn0704"
   pullPolicy: Always
-  tag: "test73"
+  tag: "test77"
 
 app:
   frontend:
@@ -17,6 +17,7 @@ app:
   cart:
     replicaCount: 1
 
+
 database:
   user:
     replicaCount: 1
@@ -26,4 +27,5 @@ database:
     replicaCount: 1
   cart:
     replicaCount: 1
+
 

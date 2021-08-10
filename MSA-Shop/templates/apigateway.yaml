@@ -50,3 +50,48 @@ spec:
       port: 8080
       targetPort: 8000
   type: ClusterIP
+
+
+---
+
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: api-gateway-hpa
+  namespace: default
+  annotations:
+    metric-config.object.istio-requests-total.prometheus/per-replica: "true"
+    metric-config.object.istio-requests-total.prometheus/query: |
+      sum(
+          rate(
+              istio_requests_total{
+                destination_workload="api-gateway",
+                destination_workload_namespace="default",
+                reporter="destination"
+              }[1m]
+          )
+      ) /
+      count(
+        count(
+          container_memory_usage_bytes{
+            namespace="default",
+          pod=~"api-gateway.*"
+          }
+        ) by (pod)
+      )
+spec:
+  maxReplicas: {{ .Values.hpa.api-gateway.maxReplicas }}
+  minReplicas: {{ .Values.hpa.api-gateway.minReplicas }}
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: api-gateway
+  metrics:
+    - type: Object
+      object:
+        metricName: istio-requests-total
+        target:
+          apiVersion: v1
+          kind: Pod
+          name: api-gateway
+        targetValue: {{ .Values.hpa.api-gateway.targetValue }}

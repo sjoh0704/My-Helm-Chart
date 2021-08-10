@@ -17,7 +17,6 @@ app:
   cart:
     replicaCount: 1
 
-
 database:
   user:
     replicaCount: 1
@@ -27,5 +26,30 @@ database:
     replicaCount: 1
   cart:
     replicaCount: 1
+
+hpa:
+  api-gateway:
+    maxReplicas: 3
+    minReplicas: 1
+    targetValue: 5
+
+  user:
+    maxReplicas: 3
+    minReplicas: 1
+    targetValue: 5
+  product:
+    maxReplicas: 3
+    minReplicas: 1
+    targetValue: 5
+  order:
+    maxReplicas: 3
+    minReplicas: 1
+    targetValue: 5
+  cart:
+    maxReplicas: 3
+    minReplicas: 1
+    targetValue: 5
+
+
 
 nfs: 10.0.2.116
