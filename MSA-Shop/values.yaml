@@ -28,7 +28,7 @@ database:
     replicaCount: 1
 
 hpa:
-  api-gateway:
+  apiGateway:
     maxReplicas: 3
     minReplicas: 1
     targetValue: 5

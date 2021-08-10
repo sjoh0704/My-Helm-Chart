@@ -80,8 +80,8 @@ metadata:
         ) by (pod)
       )
 spec:
-  maxReplicas: {{ .Values.hpa.api-gateway.maxReplicas }}
-  minReplicas: {{ .Values.hpa.api-gateway.minReplicas }}
+  maxReplicas: {{ .Values.hpa.apiGateway.maxReplicas }}
+  minReplicas: {{ .Values.hpa.apiGateway.minReplicas }}
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
@@ -94,4 +94,4 @@ spec:
           apiVersion: v1
           kind: Pod
           name: api-gateway
-        targetValue: {{ .Values.hpa.api-gateway.targetValue }}
+        targetValue: {{ .Values.hpa.apiGateway.targetValue }}
