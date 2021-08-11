@@ -18,7 +18,7 @@ spec:
         image: {{ .Values.image.repository }}/cart-service:{{ .Values.image.tag }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
-        - containerPort: 8000
+        - containerPort: 8080
         envFrom: 
         - configMapRef:
             name: service-url
