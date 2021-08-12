@@ -2,13 +2,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: product-api-server
+  name: risky-product-api-server
 spec:
   selector:
     matchLabels:
-      app: product
       version: risky
-  replicas: {{ .Values.app.product.replicaCount }}
+  replicas: 1
   template: 
     metadata:
       labels:
@@ -18,7 +17,7 @@ spec:
       containers:
       - name: product-api-container
         image: {{ .Values.image.repository }}/product-service:risky
-        imagePullPolicy: ifNotPresent
+        imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8000
         envFrom: 
@@ -54,4 +53,4 @@ spec:
       maxEjectionPercent: 100
       consecutive5xxErrors: 2
       interval: 10s
-      baseEjectionTime: 30s
+      baseEjectionTime: 120s
