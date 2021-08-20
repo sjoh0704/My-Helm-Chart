@@ -1,8 +1,8 @@
-# cart-api-server
+# cart
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cart-api-server
+  name: cart
 spec:
   selector:
     matchLabels:
@@ -14,7 +14,7 @@ spec:
         app: cart
     spec:
       containers:
-      - name: cart-api-container
+      - name: cart-container
         image: {{ .Values.image.repository }}/cart-service:{{ .Values.image.tag }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
@@ -42,7 +42,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name:  cart-api-service
+  name:  cart-service
 spec:
   selector:
     app: cart
@@ -57,7 +57,7 @@ spec:
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: cart-api-server-hpa
+  name: cart
   namespace: default
   annotations:
     metric-config.object.istio-requests-total.prometheus/per-replica: "true"
@@ -65,7 +65,7 @@ metadata:
       sum(
           rate(
               istio_requests_total{
-                destination_workload="cart-api-server",
+                destination_workload="cart",
                 destination_workload_namespace="default",
                 reporter="destination"
               }[1m]
@@ -75,7 +75,7 @@ metadata:
         count(
           container_memory_usage_bytes{
             namespace="default",
-          pod=~"cart-api-server.*"
+          pod=~"cart.*"
           }
         ) by (pod)
       )
@@ -85,7 +85,7 @@ spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: cart-api-server
+    name: cart
   metrics:
     - type: Object
       object:
@@ -93,5 +93,5 @@ spec:
         target:
           apiVersion: v1
           kind: Pod
-          name: cart-api-server
+          name: cart
         targetValue: {{ .Values.hpa.cart.targetValue }}

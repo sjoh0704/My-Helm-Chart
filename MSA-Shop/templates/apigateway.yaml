@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: api-gateway
+  name: apigateway
 spec:
   selector:
     matchLabels:
@@ -14,7 +14,7 @@ spec:
         app: gateway
     spec:
       containers:
-      - name: api-gateway-container
+      - name: apigateway-container
         image: {{ .Values.image.repository}}/gateway-service:{{ .Values.image.tag }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
@@ -41,7 +41,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: api-gateway-service
+  name: apigateway-service
 spec:
   selector:
     app: gateway
@@ -57,7 +57,7 @@ spec:
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: api-gateway-hpa
+  name: apigateway
   namespace: default
   annotations:
     metric-config.object.istio-requests-total.prometheus/per-replica: "true"
@@ -65,7 +65,7 @@ metadata:
       sum(
           rate(
               istio_requests_total{
-                destination_workload="api-gateway",
+                destination_workload="apigateway",
                 destination_workload_namespace="default",
                 reporter="destination"
               }[1m]
@@ -75,7 +75,7 @@ metadata:
         count(
           container_memory_usage_bytes{
             namespace="default",
-          pod=~"api-gateway.*"
+          pod=~"apigateway.*"
           }
         ) by (pod)
       )
@@ -85,7 +85,7 @@ spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: api-gateway
+    name: apigateway
   metrics:
     - type: Object
       object:
@@ -93,5 +93,5 @@ spec:
         target:
           apiVersion: v1
           kind: Pod
-          name: api-gateway
+          name: apigateway
         targetValue: {{ .Values.hpa.apiGateway.targetValue }}

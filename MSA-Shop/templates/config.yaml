@@ -5,12 +5,12 @@ kind: ConfigMap
 metadata:
   name: service-url
 data:
-  PRODUCT_SERVICE_URL: 'http://product-api-service:8080'
-  ORDER_SERVICE_URL: 'http://order-api-service:8080'
-  USER_SERVICE_URL: 'http://user-api-service:8080'
-  APIGATWAY_URL: 'http://api-gateway-service:8080'
+  PRODUCT_SERVICE_URL: 'http://product-service:8080'
+  ORDER_SERVICE_URL: 'http://order-service:8080'
+  USER_SERVICE_URL: 'http://user-service:8080'
+  APIGATWAY_URL: 'http://apigateway-service:8080'
   FRONTEND_URL: 'http://frontend-service:8080'
-  CART_SERVICE_URL: 'http://cart-api-service:8080'
+  CART_SERVICE_URL: 'http://cart-service:8080'
   
 ---
 # app-db-setting

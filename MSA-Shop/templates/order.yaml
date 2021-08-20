@@ -1,8 +1,8 @@
-# order-api-server
+# order
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: order-api-server
+  name: order
 spec:
   selector:
     matchLabels:
@@ -57,7 +57,7 @@ spec:
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: order-api-server-hpa
+  name: order
   namespace: default
   annotations:
     metric-config.object.istio-requests-total.prometheus/per-replica: "true"
@@ -65,7 +65,7 @@ metadata:
       sum(
           rate(
               istio_requests_total{
-                destination_workload="order-api-server",
+                destination_workload="order",
                 destination_workload_namespace="default",
                 reporter="destination"
               }[1m]
@@ -75,7 +75,7 @@ metadata:
         count(
           container_memory_usage_bytes{
             namespace="default",
-          pod=~"order-api-server.*"
+          pod=~"order.*"
           }
         ) by (pod)
       )
@@ -85,7 +85,7 @@ spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: order-api-server
+    name: order
   metrics:
     - type: Object
       object:
@@ -93,5 +93,5 @@ spec:
         target:
           apiVersion: v1
           kind: Pod
-          name: order-api-server
+          name: order
         targetValue: {{ .Values.hpa.order.targetValue }}

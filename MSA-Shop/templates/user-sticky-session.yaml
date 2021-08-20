@@ -1,28 +1,27 @@
 kind: VirtualService
 apiVersion: networking.istio.io/v1alpha3
 metadata:
-  name: user-session-virtual-service  # "just" a name for this virtualservice
+  name: user-session-virtual-service  
   namespace: default
 spec:
   hosts:
-  - user-api-service.default.svc.cluster.local  # The Service DNS (ie the regular K8S Service) name that we're applying routing rules to.
+  - user-service.default.svc.cluster.local  
   http:
   - route:
     - destination:
-        host: user-api-service.default.svc.cluster.local # The Target DNS name
-        subset: all-user-service-pods  # The name defined in the DestinationRule
-          # weight: 100 not needed if there's only one.
-
+        host: user-service.default.svc.cluster.local 
+        subset: all-user-service-pods  
+         
 ---
 
-kind: DestinationRule       # Defining which pods should be part of each subset
+kind: DestinationRule       
 apiVersion: networking.istio.io/v1alpha3
 metadata:
-  name: user-session-destination-rule # This can be anything you like.
+  name: user-session-destination-rule 
   namespace: default
 spec:
-  host: user-api-service # k8s Service dns
-  trafficPolicy:  #  useSourceIP로 loadbalancing하기 
+  host: user-service 
+  trafficPolicy: 
     loadBalancer:
       consistentHash:
         useSourceIp: true

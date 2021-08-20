@@ -1,8 +1,8 @@
-# risk version product-api-server circuit breaking
+# risk version product circuit breaking
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: risky-product-api-server
+  name: risky-product
 spec:
   selector:
     matchLabels:
