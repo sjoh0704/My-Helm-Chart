@@ -11,6 +11,7 @@ data:
   APIGATWAY_URL: 'http://apigateway-service:8080'
   FRONTEND_URL: 'http://frontend-service:8080'
   CART_SERVICE_URL: 'http://cart-service:8080'
+  RATING_SERVICE_URL: 'http://rating-service:8080'
   
 ---
 # app-db-setting
@@ -30,6 +31,7 @@ data:
   MYSQL_PRODUCT_HOST: 'mysql-product-service'
   MYSQL_ORDER_HOST: 'mysql-order-service'
   MONGO_CART_HOST: 'mongo-cart-service:27017'
+  MONGO_RATING_HOST: 'mongo-rating-service:27017'
 ---
 # db 환경변수  
 

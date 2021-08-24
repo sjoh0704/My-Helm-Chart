@@ -16,6 +16,8 @@ app:
     replicaCount: 1
   cart:
     replicaCount: 1
+  rating:
+    replicaCount: 1
 
 database:
   user:
@@ -25,6 +27,8 @@ database:
   order:
     replicaCount: 1
   cart:
+    replicaCount: 1
+  rating:
     replicaCount: 1
 
 hpa:
@@ -49,6 +53,10 @@ hpa:
     minReplicas: 1
     targetValue: 5
   cart:
+    maxReplicas: 3
+    minReplicas: 1
+    targetValue: 5
+  rating:
     maxReplicas: 3
     minReplicas: 1
     targetValue: 5

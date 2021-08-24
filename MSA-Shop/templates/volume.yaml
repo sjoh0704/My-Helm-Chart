@@ -68,6 +68,22 @@ spec:
     path: "/data/mongo-cart"
     server: {{ .Values.nfs }}
 ---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nf-rating-pv
+  labels:
+    db: rating
+spec:
+  capacity:
+    storage: 3Gi
+  volumeMode: Filesystem
+  accessModes: 
+  - ReadWriteMany
+  nfs:
+    path: "/data/mongo-rating"
+    server: {{ .Values.nfs }}
+---
 # persistentVolumeClaim
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -124,3 +140,17 @@ spec:
   selector: 
     matchLabels: 
       db: cart
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nfs-rating-pvc
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 3Gi
+  selector: 
+    matchLabels: 
+      db: rating
