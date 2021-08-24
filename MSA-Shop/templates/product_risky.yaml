@@ -47,10 +47,10 @@ kind: DestinationRule
 metadata:
   name: circuit-breaker-for-the-product-service
 spec:
-  host: "product-api-service.default.svc.cluster.local"  
+  host: "product-service.default.svc.cluster.local"  
   trafficPolicy:
     outlierDetection:
       maxEjectionPercent: 100
       consecutive5xxErrors: 2
       interval: 10s
-      baseEjectionTime: 120s
+      baseEjectionTime: 30s
