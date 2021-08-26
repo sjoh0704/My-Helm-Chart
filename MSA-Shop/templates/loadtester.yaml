@@ -8,7 +8,7 @@ metadata:
   namespace: test
 spec:
   containers:
-  - image: tmdwn0704/loadtester:2
+  - image: tmdwn0704/loadtester:3
     name: loadtester
     resources: {}
   dnsPolicy: ClusterFirst
