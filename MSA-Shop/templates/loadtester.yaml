@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: loadtester
+  name: loadtester
+  namespace: test
+spec:
+  containers:
+  - image: tmdwn0704/loadtester:1
+    name: loadtester
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}

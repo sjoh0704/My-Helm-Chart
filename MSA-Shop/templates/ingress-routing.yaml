@@ -26,8 +26,8 @@ spec:
   http:
   - match:
     - headers:
-        user: 
-          exact: admin
+        token: 
+          exact: my-secret-token
       uri:
         prefix: "/admin/order"
     rewrite:
@@ -37,8 +37,8 @@ spec:
         host: order-service.default.svc.cluster.local
   - match:
     - headers:
-        user:
-          exact: admin
+        token:
+          exact: my-secret-token
       uri:
         prefix: "/admin/user"
     rewrite:
@@ -49,8 +49,8 @@ spec:
         host: user-service.default.svc.cluster.local
   - match:
     - headers:
-        user:
-          exact: admin
+        token:
+          exact: my-secret-token
       uri:
         prefix: "/admin/item"
     rewrite:
@@ -61,8 +61,8 @@ spec:
         host: product-service.default.svc.cluster.local
   - match:
     - headers: 
-        user:
-          exact: admin 
+        token:
+          exact: my-secret-token 
       uri:
         prefix: "/"
     route:
