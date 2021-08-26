@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: rating
+  name: rating-canary
 spec:
   selector:
     matchLabels:
