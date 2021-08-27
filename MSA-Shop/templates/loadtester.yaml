@@ -1,16 +1,27 @@
-apiVersion: v1
-kind: Pod
+
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   creationTimestamp: null
   labels:
-    run: loadtester
+    app: loadtester
   name: loadtester
   namespace: test
 spec:
-  containers:
-  - image: tmdwn0704/loadtester:4
-    name: loadtester
-    resources: {}
-  dnsPolicy: ClusterFirst
-  restartPolicy: Always
+  replicas: 1
+  selector:
+    matchLabels:
+      app: loadtester
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: loadtester
+    spec:
+      containers:
+      - image: tmdwn0704/loadtester:7
+        name: loadtester
+        resources: {}
 status: {}
+
