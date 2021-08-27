@@ -16,8 +16,8 @@ spec:
     spec:
       containers:
       - name: product-api-container
-        image: {{ .Values.image.repository }}/product-service:risky1
-        imagePullPolicy: IfNotPresent
+        image: {{ .Values.image.repository }}/product-service:risky4
+        imagePullPolicy: Always
         ports:
         - containerPort: 8000
         envFrom: 
