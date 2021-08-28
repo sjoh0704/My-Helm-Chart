@@ -51,6 +51,8 @@ spec:
   trafficPolicy:
     outlierDetection:
       maxEjectionPercent: 100
-      consecutive5xxErrors: 20
-      interval: 20s
+      consecutive5xxErrors: 6
+      interval: 10s
       baseEjectionTime: 30s
+
+ 
