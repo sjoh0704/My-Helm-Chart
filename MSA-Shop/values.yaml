@@ -1,7 +1,7 @@
 image:
   repository: "tmdwn0704"
   pullPolicy: Always
-  tag: "test92"
+  tag: "test93"
 
 app:
   frontend:
@@ -60,6 +60,9 @@ hpa:
     maxReplicas: 3
     minReplicas: 1
     targetValue: 5
+
+loadtester:
+  replicas: 0
 
 
 
