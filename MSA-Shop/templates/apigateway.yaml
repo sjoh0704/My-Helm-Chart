@@ -18,7 +18,7 @@ spec:
         image: {{ .Values.image.repository}}/gateway-service:{{ .Values.image.tag }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
-        - containerPort: 8000
+        - containerPort: 80
         envFrom: 
         - configMapRef:
             name: service-url
@@ -26,14 +26,14 @@ spec:
         livenessProbe:
           httpGet:
             path: /health
-            port: 8000
+            port: 80
           initialDelaySeconds: 80
           periodSeconds: 10
 
         readinessProbe:
           httpGet:
             path: /health
-            port: 8000
+            port: 80
           initialDelaySeconds: 80
           periodSeconds: 10
       
@@ -48,7 +48,7 @@ spec:
   ports:
     - name: http
       port: 8080
-      targetPort: 8000
+      targetPort: 80
   type: ClusterIP
 
 
