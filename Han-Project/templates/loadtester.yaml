@@ -1,0 +1,27 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: loadtester
+  name: loadtester
+  namespace: test
+spec:
+  replicas: {{ .Values.loadtester.replicas }}
+  selector:
+    matchLabels:
+      app: loadtester
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: loadtester
+    spec:
+      containers:
+      - image: tmdwn0704/loadtester:14
+        name: loadtester
+        resources: {}
+status: {}
+

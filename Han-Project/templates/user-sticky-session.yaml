@@ -1,0 +1,31 @@
+kind: VirtualService
+apiVersion: networking.istio.io/v1alpha3
+metadata:
+  name: user-session-virtual-service  
+  namespace: default
+spec:
+  hosts:
+  - user-service.default.svc.cluster.local  
+  http:
+  - route:
+    - destination:
+        host: user-service.default.svc.cluster.local 
+        subset: all-user-service-pods  
+         
+---
+
+kind: DestinationRule       
+apiVersion: networking.istio.io/v1alpha3
+metadata:
+  name: user-session-destination-rule 
+  namespace: default
+spec:
+  host: user-service 
+  trafficPolicy: 
+    loadBalancer:
+      consistentHash:
+        useSourceIp: true
+  subsets:
+    - labels:
+        app: user
+      name: all-user-service-pods

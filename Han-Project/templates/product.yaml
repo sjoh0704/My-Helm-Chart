@@ -1,0 +1,99 @@
+# product
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product
+spec:
+  selector:
+    matchLabels:
+      app: product
+  replicas: {{ .Values.app.product.replicaCount }}
+  template: 
+    metadata:
+      labels:
+        app: product
+    spec:
+      containers:
+      - name: product-api-container
+        image: {{ .Values.image.repository }}/product-service:{{ .Values.image.tag }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: 8000
+        envFrom: 
+        - configMapRef:
+            name: service-url
+        - configMapRef:
+            name: app-db-setting
+
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 80
+          periodSeconds: 10
+          
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 80
+          periodSeconds: 10
+      
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name:  product-service
+spec:
+  selector:
+    app: product
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8000
+  type: ClusterIP
+
+
+---
+
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: product
+  namespace: default
+  annotations:
+    metric-config.object.istio-requests-total.prometheus/per-replica: "true"
+    metric-config.object.istio-requests-total.prometheus/query: |
+      sum(
+          rate(
+              istio_requests_total{
+                destination_workload="product",
+                destination_workload_namespace="default",
+                reporter="destination"
+              }[1m]
+          )
+      ) /
+      count(
+        count(
+          container_memory_usage_bytes{
+            namespace="default",
+          pod=~"product.*"
+          }
+        ) by (pod)
+      )
+spec:
+  maxReplicas: {{ .Values.hpa.product.maxReplicas }}
+  minReplicas: {{ .Values.hpa.product.minReplicas }}
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: product
+  metrics:
+    - type: Object
+      object:
+        metricName: istio-requests-total
+        target:
+          apiVersion: v1
+          kind: Pod
+          name: product
+        targetValue: {{ .Values.hpa.product.targetValue }}

@@ -1,0 +1,96 @@
+# user
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user
+spec:
+  selector:
+    matchLabels:
+      app: user
+  replicas: {{ .Values.app.user.replicaCount }}
+  template: 
+    metadata:
+      labels:
+        app: user
+    spec:
+      containers:
+      - name: user-api-container
+        image: {{ .Values.image.repository }}/user-service:{{ .Values.image.tag }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: 8000
+        envFrom: 
+        - configMapRef:
+            name: service-url
+        - configMapRef:
+            name: app-db-setting
+
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 80
+          periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name:  user-service
+spec:
+  selector:
+    app: user
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8000
+  type: ClusterIP
+---
+
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: user
+  namespace: default
+  annotations:
+    metric-config.object.istio-requests-total.prometheus/per-replica: "true"
+    metric-config.object.istio-requests-total.prometheus/query: |
+      sum(
+          rate(
+              istio_requests_total{
+                destination_workload="user",
+                destination_workload_namespace="default",
+                reporter="destination"
+              }[1m]
+          )
+      ) /
+      count(
+        count(
+          container_memory_usage_bytes{
+            namespace="default",
+          pod=~"user.*"
+          }
+        ) by (pod)
+      )
+spec:
+  maxReplicas: {{ .Values.hpa.user.maxReplicas }}
+  minReplicas: {{ .Values.hpa.user.minReplicas }}
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: user
+  metrics:
+    - type: Object
+      object:
+        metricName: istio-requests-total
+        target:
+          apiVersion: v1
+          kind: Pod
+          name: user
+        targetValue: {{ .Values.hpa.user.targetValue }}

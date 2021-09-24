@@ -1,0 +1,217 @@
+
+# db-service
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-user-service
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+  selector:
+    db: mysql-user
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-product-service
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+  selector:
+    db: mysql-product
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-order-service
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+  selector:
+    db: mysql-order
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-cart-service
+spec:
+  ports:
+  - port: 27017
+    targetPort: 27017
+  selector:
+    db: mongo-cart
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-rating-service
+spec:
+  ports:
+  - port: 27017
+    targetPort: 27017
+  selector:
+    db: mongo-rating
+
+---
+
+# database deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-user
+spec:
+  replicas: {{ .Values.database.user.replicaCount }}
+  selector:
+    matchLabels:
+      db: mysql-user
+  template:
+    metadata:
+      labels:
+        db: mysql-user
+    spec:
+      containers:
+      - image: mysql:5.6
+        name: mysql
+        envFrom: 
+        - configMapRef:
+            name: database
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: nfs-user-pvc
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-product
+spec:
+  replicas: {{ .Values.database.product.replicaCount }}
+  selector:
+    matchLabels:
+      db: mysql-product
+  template:
+    metadata:
+      labels:
+        db: mysql-product
+    spec:
+      containers:
+      - image: mysql:5.6
+        name: mysql
+        envFrom: 
+        - configMapRef:
+            name: database
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: nfs-product-pvc
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-order
+spec:
+  replicas: {{ .Values.database.order.replicaCount }}
+  selector:
+    matchLabels:
+      db: mysql-order
+  template:
+    metadata:
+      labels:
+        db: mysql-order
+    spec:
+      containers:
+      - image: mysql:5.6
+        name: mysql
+        envFrom: 
+        - configMapRef:
+            name: database
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: nfs-order-pvc
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-cart
+spec:
+  replicas: {{ .Values.database.cart.replicaCount }}
+  selector:
+    matchLabels:
+      db: mongo-cart
+  template:
+    metadata:
+      labels:
+        db: mongo-cart
+    spec:
+      containers:
+      - image: mongo
+        name: mongo
+        envFrom: 
+        - configMapRef:
+            name: database
+        ports:
+        - containerPort: 27017
+          name: mongodb
+        volumeMounts:
+        - name: mongo-persistent-storage
+          mountPath: /data/db
+      volumes:
+      - name: mongo-persistent-storage
+        persistentVolumeClaim:
+          claimName: nfs-cart-pvc
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-rating
+spec:
+  replicas: {{ .Values.database.rating.replicaCount }}
+  selector:
+    matchLabels:
+      db: mongo-rating
+  template:
+    metadata:
+      labels:
+        db: mongo-rating
+    spec:
+      containers:
+      - image: mongo
+        name: mongo
+        envFrom: 
+        - configMapRef:
+            name: database
+        ports:
+        - containerPort: 27017
+          name: mongodb
+        volumeMounts:
+        - name: mongo-persistent-storage
+          mountPath: /data/db
+      volumes:
+      - name: mongo-persistent-storage
+        persistentVolumeClaim:
+          claimName: nfs-rating-pvc
