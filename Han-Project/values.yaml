@@ -18,6 +18,10 @@ app:
     replicaCount: 1
   rating:
     replicaCount: 1
+  post:
+    replicaCount: 1
+  auction:
+    replicaCount: 1
 
 database:
   user:
@@ -29,6 +33,10 @@ database:
   cart:
     replicaCount: 1
   rating:
+    replicaCount: 1
+  post:
+    replicaCount: 1
+  auction:
     replicaCount: 1
 
 hpa:
@@ -57,6 +65,14 @@ hpa:
     minReplicas: 1
     targetValue: 5
   rating:
+    maxReplicas: 3
+    minReplicas: 1
+    targetValue: 5
+  post:
+    maxReplicas: 3
+    minReplicas: 1
+    targetValue: 5
+  auction:
     maxReplicas: 3
     minReplicas: 1
     targetValue: 5

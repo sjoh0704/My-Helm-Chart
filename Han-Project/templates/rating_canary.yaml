@@ -1,75 +1,75 @@
-# rating
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: rating-canary
-spec:
-  selector:
-    matchLabels:
-      version: canary
-  replicas: 1
-  template: 
-    metadata:
-      labels:
-        app: rating
-        version: canary
-    spec:
-      containers:
-      - name: rating-container
-        image: {{ .Values.image.repository }}/rating-service:canary
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
-        ports:
-        - containerPort: 8081
-        envFrom: 
-        - configMapRef:
-            name: service-url
-        - configMapRef:
-            name: app-db-setting
+# # rating
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: rating-canary
+# spec:
+#   selector:
+#     matchLabels:
+#       version: canary
+#   replicas: 1
+#   template: 
+#     metadata:
+#       labels:
+#         app: rating
+#         version: canary
+#     spec:
+#       containers:
+#       - name: rating-container
+#         image: {{ .Values.image.repository }}/rating-service:canary
+#         imagePullPolicy: {{ .Values.image.pullPolicy }}
+#         ports:
+#         - containerPort: 8081
+#         envFrom: 
+#         - configMapRef:
+#             name: service-url
+#         - configMapRef:
+#             name: app-db-setting
         
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: 8081
-          initialDelaySeconds: 80
-          periodSeconds: 10
+#         livenessProbe:
+#           httpGet:
+#             path: /health
+#             port: 8081
+#           initialDelaySeconds: 80
+#           periodSeconds: 10
           
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: 8081
-          initialDelaySeconds: 80
-          periodSeconds: 10
----
-kind: VirtualService
-apiVersion: networking.istio.io/v1alpha3
-metadata:
-  name: rating-canary-virtual-service  # 단지 virtualservice의 이름
-  namespace: default
-spec:
-  hosts:
-    - rating-service.default.svc.cluster.local  # routing rules을 적용한 k8s 서비스의 dns name
-  http:
-    - route:
-        - destination:
-            host: rating-service.default.svc.cluster.local # 타겟 서비스 DNS name
-            subset: original  # DestinationRule에서 정의된 이름으로 selection 쯔음이라고 생각하자
-          weight: 90
-        - destination:
-            host: rating-service.default.svc.cluster.local # 타겟 서비스 DNS name
-            subset: canary  # The name defined in the DestinationRule
-          weight: 10
----
-kind: DestinationRule       # 포드의 레이블을 이용하여 어떤 subnet으로 구분할 것인지 결정한다. 
-apiVersion: networking.istio.io/v1alpha3
-metadata:
-  name: rating-canary-destination-rule # 아무 이름이나 상관없다.
-  namespace: default
-spec:
-  host: rating-service.default.svc.cluster.local # routing rule을 정해준 서비스 dns name
-  subsets:
-    - labels:   # k8s의 selector다.
-        version: original # version: safe라는 레이블을 가진 포드들의 서브넷을 safe-group이라고 하겠다.  
-      name: original
-    - labels:
-        version: canary # version: risky라는 레이블을 가진 포드들의 서브넷을 risky-group이라고 하겠다.
-      name: canary
+#         readinessProbe:
+#           httpGet:
+#             path: /health
+#             port: 8081
+#           initialDelaySeconds: 80
+#           periodSeconds: 10
+# ---
+# kind: VirtualService
+# apiVersion: networking.istio.io/v1alpha3
+# metadata:
+#   name: rating-canary-virtual-service  # 단지 virtualservice의 이름
+#   namespace: default
+# spec:
+#   hosts:
+#     - rating-service.default.svc.cluster.local  # routing rules을 적용한 k8s 서비스의 dns name
+#   http:
+#     - route:
+#         - destination:
+#             host: rating-service.default.svc.cluster.local # 타겟 서비스 DNS name
+#             subset: original  # DestinationRule에서 정의된 이름으로 selection 쯔음이라고 생각하자
+#           weight: 90
+#         - destination:
+#             host: rating-service.default.svc.cluster.local # 타겟 서비스 DNS name
+#             subset: canary  # The name defined in the DestinationRule
+#           weight: 10
+# ---
+# kind: DestinationRule       # 포드의 레이블을 이용하여 어떤 subnet으로 구분할 것인지 결정한다. 
+# apiVersion: networking.istio.io/v1alpha3
+# metadata:
+#   name: rating-canary-destination-rule # 아무 이름이나 상관없다.
+#   namespace: default
+# spec:
+#   host: rating-service.default.svc.cluster.local # routing rule을 정해준 서비스 dns name
+#   subsets:
+#     - labels:   # k8s의 selector다.
+#         version: original # version: safe라는 레이블을 가진 포드들의 서브넷을 safe-group이라고 하겠다.  
+#       name: original
+#     - labels:
+#         version: canary # version: risky라는 레이블을 가진 포드들의 서브넷을 risky-group이라고 하겠다.
+#       name: canary

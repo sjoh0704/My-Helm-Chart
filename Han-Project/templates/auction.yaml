@@ -1,0 +1,98 @@
+# auction
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auction
+spec:
+  selector:
+    matchLabels:
+      app: auction
+  replicas: {{ .Values.app.auction.replicaCount }}
+  template: 
+    metadata:
+      labels:
+        version: original
+        app: auction
+    spec:
+      containers:
+      - name: auction-container
+        image: {{ .Values.image.repository }}/auction-service:{{ .Values.image.tag }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: 8083
+        envFrom: 
+        - configMapRef:
+            name: service-url
+        - configMapRef:
+            name: app-db-setting
+        
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8083
+          initialDelaySeconds: 80
+          periodSeconds: 10
+          
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8083
+          initialDelaySeconds: 80
+          periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name:  auction-service
+spec:
+  selector:
+    app: auction
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8083
+  type: ClusterIP
+
+---
+
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: auction
+  namespace: default
+  annotations:
+    metric-config.object.istio-requests-total.prometheus/per-replica: "true"
+    metric-config.object.istio-requests-total.prometheus/query: |
+      sum(
+          rate(
+              istio_requests_total{
+                destination_workload="auction",
+                destination_workload_namespace="default",
+                reporter="destination"
+              }[1m]
+          )
+      ) /
+      count(
+        count(
+          container_memory_usage_bytes{
+            namespace="default",
+          pod=~"auction.*"
+          }
+        ) by (pod)
+      )
+spec:
+  maxReplicas: {{ .Values.hpa.auction.maxReplicas }}
+  minReplicas: {{ .Values.hpa.auction.minReplicas }}
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: auction
+  metrics:
+    - type: Object
+      object:
+        metricName: istio-requests-total
+        target:
+          apiVersion: v1
+          kind: Pod
+          name: auction
+        targetValue: {{ .Values.hpa.auction.targetValue }}

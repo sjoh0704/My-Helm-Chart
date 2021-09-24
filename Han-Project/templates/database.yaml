@@ -54,7 +54,28 @@ spec:
     targetPort: 27017
   selector:
     db: mongo-rating
-
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongo-auction-service
+spec:
+  ports:
+  - port: 27017
+    targetPort: 27017
+  selector:
+    db: mongo-auction
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-post-service
+spec:
+  ports:
+  - port: 3306
+    targetPort: 3306
+  selector:
+    db: mysql-post
 ---
 
 # database deployment
@@ -215,3 +236,66 @@ spec:
       - name: mongo-persistent-storage
         persistentVolumeClaim:
           claimName: nfs-rating-pvc
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb-auction
+spec:
+  replicas: {{ .Values.database.auction.replicaCount }}
+  selector:
+    matchLabels:
+      db: mongo-auction
+  template:
+    metadata:
+      labels:
+        db: mongo-auction
+    spec:
+      containers:
+      - image: mongo
+        name: mongo
+        envFrom: 
+        - configMapRef:
+            name: database
+        ports:
+        - containerPort: 27017
+          name: mongodb
+        volumeMounts:
+        - name: mongo-persistent-storage
+          mountPath: /data/db
+      volumes:
+      - name: mongo-persistent-storage
+        persistentVolumeClaim:
+          claimName: nfs-auction-pvc
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-post
+spec:
+  replicas: {{ .Values.database.post.replicaCount }}
+  selector:
+    matchLabels:
+      db: mysql-post
+  template:
+    metadata:
+      labels:
+        db: mysql-post
+    spec:
+      containers:
+      - image: mysql:5.6
+        name: mysql
+        envFrom: 
+        - configMapRef:
+            name: database
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: nfs-post-pvc
