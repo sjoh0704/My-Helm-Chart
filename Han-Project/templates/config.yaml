@@ -12,7 +12,8 @@ data:
   FRONTEND_URL: 'http://frontend-service:8080'
   CART_SERVICE_URL: 'http://cart-service:8080'
   RATING_SERVICE_URL: 'http://rating-service:8080'
-  
+  POST_SERVICE_URL: 'http://post-service:8080'
+  AUCTION_SERVICE_URL: 'http://auction-service:8080'
 ---
 # app-db-setting
 apiVersion: v1
@@ -32,6 +33,8 @@ data:
   MYSQL_ORDER_HOST: 'mysql-order-service'
   MONGO_CART_HOST: 'mongo-cart-service:27017'
   MONGO_RATING_HOST: 'mongo-rating-service:27017'
+  MYSQL_POST_HOST: 'mysql-post-service'
+  MONGO_AUCTION_HOST: 'mongo-auction-service:27017'
 ---
 # db 환경변수  
 
