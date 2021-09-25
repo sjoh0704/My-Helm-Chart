@@ -1,0 +1,58 @@
+image:
+  repository: "tmdwn0704"
+  pullPolicy: Always
+  tag: "test98"
+
+app:
+  frontend:
+    replicaCount: 1
+  user:
+    replicaCount: 2
+  product:
+    replicaCount: 1
+  order:
+    replicaCount: 1
+  apiGateWay:
+    replicaCount: 1
+  cart:
+    replicaCount: 1
+
+database:
+  user:
+    replicaCount: 1
+  product:
+    replicaCount: 1
+  order:
+    replicaCount: 1
+  cart:
+    replicaCount: 1
+
+hpa:
+  frontend:
+    maxReplicas: 3
+    minReplicas: 1
+    targetValue: 5
+  apiGateway:
+    maxReplicas: 3
+    minReplicas: 1
+    targetValue: 5
+  user:
+    maxReplicas: 3
+    minReplicas: 1
+    targetValue: 5
+  product:
+    maxReplicas: 3
+    minReplicas: 1
+    targetValue: 5
+  order:
+    maxReplicas: 3
+    minReplicas: 1
+    targetValue: 5
+  cart:
+    maxReplicas: 3
+    minReplicas: 1
+    targetValue: 5
+
+
+
+nfs: 10.0.2.116
