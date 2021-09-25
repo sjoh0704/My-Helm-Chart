@@ -34,7 +34,7 @@ data:
   MONGO_CART_HOST: 'mongo-cart-service:27017'
   MONGO_RATING_HOST: 'mongo-rating-service:27017'
   MYSQL_POST_HOST: 'mysql-post-service'
-  MONGO_AUCTION_HOST: 'mongo-auction-service:27017'
+  MONGO_AUCTION_HOST: 'mongodb://mongo-auction-service/db'
 ---
 # db 환경변수  
 
