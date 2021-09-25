@@ -36,6 +36,9 @@ spec:
           initialDelaySeconds: 80
           periodSeconds: 10
         resources: {}
+        envFrom:
+        - secretRef:
+            name: aws-bucket-secret
 ---
 apiVersion: v1
 kind: Service
@@ -93,6 +96,3 @@ spec:
           kind: Pod
           name: frontend
         targetValue: {{ .Values.hpa.frontend.targetValue }}
-
-
-
