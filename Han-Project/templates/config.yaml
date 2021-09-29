@@ -9,7 +9,7 @@ data:
   ORDER_SERVICE_URL: 'http://order-service:8080'
   USER_SERVICE_URL: 'http://user-service:8080'
   APIGATWAY_URL: 'http://apigateway-service:8080'
-  FRONTEND_URL: 'http://frontend-service:8080'
+  FRONTEND_URL: 'http://frontend-service'
   CART_SERVICE_URL: 'http://cart-service:8080'
   RATING_SERVICE_URL: 'http://rating-service:8080'
   POST_SERVICE_URL: 'http://post-service:8080'
