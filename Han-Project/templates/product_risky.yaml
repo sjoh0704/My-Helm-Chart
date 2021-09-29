@@ -1,58 +1,58 @@
-# # risk version product circuit breaking
-# apiVersion: apps/v1
-# kind: Deployment
-# metadata:
-#   name: risky-product
-# spec:
-#   selector:
-#     matchLabels:
-#       version: risky
-#   replicas: 1
-#   template: 
-#     metadata:
-#       labels:
-#         app: product
-#         version: risky
-#     spec:
-#       containers:
-#       - name: product-api-container
-#         image: {{ .Values.image.repository }}/product-service:risky4
-#         imagePullPolicy: Always
-#         ports:
-#         - containerPort: 8000
-#         envFrom: 
-#         - configMapRef:
-#             name: service-url
-#         - configMapRef:
-#             name: app-db-setting
+# risk version product circuit breaking
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: risky-product
+spec:
+  selector:
+    matchLabels:
+      version: risky
+  replicas: 1
+  template: 
+    metadata:
+      labels:
+        app: product
+        version: risky
+    spec:
+      containers:
+      - name: product-api-container
+        image: {{ .Values.image.repository }}/product-service:risky4
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8000
+        envFrom: 
+        - configMapRef:
+            name: service-url
+        - configMapRef:
+            name: app-db-setting
 
-#         livenessProbe:
-#           httpGet:
-#             path: /health
-#             port: 8000
-#           initialDelaySeconds: 80
-#           periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 80
+          periodSeconds: 10
           
-#         readinessProbe:
-#           httpGet:
-#             path: /health
-#             port: 8000
-#           initialDelaySeconds: 80
-#           periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 80
+          periodSeconds: 10
       
-# ---
+---
 
-# apiVersion: networking.istio.io/v1alpha3
-# kind: DestinationRule
-# metadata:
-#   name: circuit-breaker-for-the-product-service
-# spec:
-#   host: "product-service.default.svc.cluster.local"  
-#   trafficPolicy:
-#     outlierDetection:
-#       maxEjectionPercent: 100
-#       consecutive5xxErrors: 6
-#       interval: 10s
-#       baseEjectionTime: 30s
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: circuit-breaker-for-the-product-service
+spec:
+  host: "product-service.default.svc.cluster.local"  
+  trafficPolicy:
+    outlierDetection:
+      maxEjectionPercent: 100
+      consecutive5xxErrors: 6
+      interval: 10s
+      baseEjectionTime: 30s
 
  

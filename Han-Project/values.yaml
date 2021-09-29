@@ -78,7 +78,7 @@ hpa:
     targetValue: 5
 
 loadtester:
-  replicas: 0
+  replicas: 1
 
 
 
