@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: rating-container
-        image: {{ .Values.image.repository }}/rating-service:canary
+        image: {{ .Values.image.repository }}/rating-service:canary2
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
         - containerPort: 8081
