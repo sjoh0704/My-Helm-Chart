@@ -20,7 +20,7 @@ spec:
         app: loadtester
     spec:
       containers:
-      - image: tmdwn0704/loadtester:19
+      - image: tmdwn0704/loadtester:21
         name: loadtester
         resources: {}
 status: {}
