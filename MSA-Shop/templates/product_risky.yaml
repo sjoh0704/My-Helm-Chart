@@ -50,8 +50,8 @@ spec:
   host: "product-service.default.svc.cluster.local"  
   trafficPolicy:
     outlierDetection:
-      maxEjectionPercent: 100
-      consecutive5xxErrors: 6
+      maxEjectionPercent: 50
+      consecutive5xxErrors: 5
       interval: 10s
       baseEjectionTime: 30s
 
