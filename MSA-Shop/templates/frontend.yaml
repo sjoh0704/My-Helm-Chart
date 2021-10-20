@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: {{ .Values.image.repository }}/frontend:{{ .Values.image.tag }}
+        image: {{ .Values.image.repository }}/frontend:test93fixed
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         ports:
         - containerPort: 3000
