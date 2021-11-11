@@ -11,6 +11,6 @@ spec:
     server: {{ .Values.spec.destination.server }}
   project: default
   source:
-    path: apps
-    repoURL: https://github.com/argoproj/argocd-example-apps
+    path: child-chart
+    repoURL: https://github.com/sjoh0704/Sseung-Helm-Chart.git
     targetRevision: HEAD
