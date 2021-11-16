@@ -9,7 +9,7 @@ spec:
   destination:
     namespace: default
     server: {{ .Values.spec.destination.server }}
-  project: frontend-project
+  project: default
   source:
     path: App/frontend
     repoURL: https://github.com/sjoh0704/Sseung-Helm-Chart.git
