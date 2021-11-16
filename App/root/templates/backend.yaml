@@ -1,16 +1,16 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: kafka
+  name: backend
   namespace: argo
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
-    namespace: kubeless
+    namespace: default
     server: {{ .Values.spec.destination.server }}
-  project: kafka-project
+  project: backend-project
   source:
-    path: App/kafka
+    path: App/backend
     repoURL: https://github.com/sjoh0704/Sseung-Helm-Chart.git
     targetRevision: HEAD
