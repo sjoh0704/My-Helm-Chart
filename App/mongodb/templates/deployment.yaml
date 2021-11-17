@@ -18,17 +18,3 @@ spec:
         ports:
         - containerPort: 27017
           name: mongodb
-
----
-
-apiVersion: v1
-kind: Service
-metadata:
-  name: mongodb-service
-spec:
-  ports:
-  - port: 27017
-    targetPort: 27017
-  selector:
-    app: mongodb
-
