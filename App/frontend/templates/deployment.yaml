@@ -20,12 +20,11 @@ spec:
       containers:
       - image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
         name: front-app
-        env:
-        - name: REACT_APP_BASE_URL
-          value: "http://backend-service.default.svc:8080"
         envFrom:
         - secretRef:
             name: {{ .Values.secret.aws.bucket }}
+        - configmapRef:
+            name: backend-url-configmap
         ports:
         - containerPort: 3000
         resources: {}
