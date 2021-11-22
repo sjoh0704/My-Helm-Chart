@@ -8,3 +8,6 @@ image:
 secret: 
   aws:
     bucket: aws-bucket-secret
+
+service:
+  nodePort: 30000
