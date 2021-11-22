@@ -6,7 +6,7 @@ metadata:
     app: backend
   name: backend
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       app: backend
@@ -18,7 +18,7 @@ spec:
         app: backend
     spec:
       containers:
-      - image: tmdwn0704/backend:02
+      - image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
         name: backend
         ports:
         - containerPort: 8080
