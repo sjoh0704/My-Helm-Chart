@@ -139,4 +139,3 @@ spec:
       function: checkface
     type: ClusterIP
   timeout: "180"
-
