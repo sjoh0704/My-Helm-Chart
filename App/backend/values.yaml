@@ -3,5 +3,5 @@ replicaCount: 1
 image:
   repository: tmdwn0704/backend
   pullPolicy: IfNotPresent
-  tag: 03
+  tag: "03"
 
