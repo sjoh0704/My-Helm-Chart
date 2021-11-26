@@ -23,7 +23,7 @@ spec:
         envFrom:
         - secretRef:
             name: {{ .Values.secret.aws.bucket }}
-        - configmapRef:
+        - configMapRef:
             name: backend-url-configmap
         ports:
         - containerPort: 3000
