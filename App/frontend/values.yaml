@@ -10,4 +10,4 @@ secret:
     bucket: aws-bucket-secret
 
 service:
-  nodePort: 30000
+  nodePort: 30002
