@@ -3,7 +3,7 @@ replicaCount: 1
 image:
   repository: tmdwn0704/front-app
   pullPolicy: IfNotPresent
-  tag: "07"
+  tag: "08"
 
 secret: 
   aws:
