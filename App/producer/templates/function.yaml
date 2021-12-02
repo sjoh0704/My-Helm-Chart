@@ -22,7 +22,13 @@ spec:
           containers:
           - imagePullPolicy: Always
             name: ""
-            resources: {}
+            resources:
+              limits:
+                cpu: 200m
+                memory: 200Mi
+              requests:
+                cpu: 100m
+                memory: 100Mi
     status: {}
   deps: |
     {
@@ -101,4 +107,5 @@ spec:
       function: producer
     type: ClusterIP
   timeout: "180"
+
 
