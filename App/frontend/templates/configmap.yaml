@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: backend-url-configmap
-data:
-  REACT_APP_BASE_URL: "http://backend-service.default.svc:8080" 

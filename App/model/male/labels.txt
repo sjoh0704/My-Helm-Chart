@@ -1,6 +1,0 @@
-0 cat
-1 dog
-2 dino
-3 bear
-4 fox
-5 rabbit
