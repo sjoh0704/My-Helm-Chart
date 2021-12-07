@@ -1,0 +1,5 @@
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+  source:
+    repoURL: https://github.com/sjoh0704/Sseung-Helm-Chart.git

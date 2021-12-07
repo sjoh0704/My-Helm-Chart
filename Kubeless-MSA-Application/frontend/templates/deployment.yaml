@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: front-app
+  name: front-app
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: front-app
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: front-app
+    spec:
+      containers:
+      - image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        name: front-app
+        envFrom:
+        - secretRef:
+            name: {{ .Values.secret.aws.bucket }}
+        - configMapRef:
+            name: backend-url-configmap
+        ports:
+        - containerPort: 3000
+        resources: {}
+status: {}
