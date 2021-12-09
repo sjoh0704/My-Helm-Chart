@@ -1,4 +1,5 @@
 # MSA-Shop-Helm-Chart
+This chart is for [MSA Shop project](https://github.com/sjoh0704/Sseung-MSA-Shop "about chart detail")  
 
 <br/>
 
@@ -16,9 +17,3 @@ helm install test Sseung-Helm-Chart/MSA-Shop
 ```
 <br/>
 
-
-<br/>
-
-#### [about chart detail](https://github.com/sjoh0704/Sseung-MSA-Shop "about chart detail")  
-
-<br/>
