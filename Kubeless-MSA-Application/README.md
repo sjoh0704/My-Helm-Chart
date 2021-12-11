@@ -1,6 +1,8 @@
 # Kubeless-MSA-Application Helm Charts
 
 
+[Chart Detail](https://github.com/sjoh0704/Kubeless-MSA-Application "about chart detail")  
+
 
 For installation, the following conditions must be satisfied.
 ## Install Version
