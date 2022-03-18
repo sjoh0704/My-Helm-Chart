@@ -1,0 +1,62 @@
+# persistentVolumeClaim
+{{ if .Values.volume.storageClass.use }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: user-pvc
+spec:
+  storageClassName: {{ .Values.volume.storageClass.name }}
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 3Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: product-pvc
+spec:
+  storageClassName: {{ .Values.volume.storageClass.name }}
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 3Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: order-pvc
+spec:
+  storageClassName: {{ .Values.volume.storageClass.name }}
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 3Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: cart-pvc
+spec:
+  storageClassName: {{ .Values.volume.storageClass.name }}
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 3Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: rating-pvc
+spec:
+  storageClassName: {{ .Values.volume.storageClass.name }}
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 3Gi
+{{ end }}

@@ -65,5 +65,11 @@ loadtester:
   replicas: 1
 
 
+volume:
+  nfs:
+    use: false
+    ip: 10.0.2.116
 
-nfs: 10.0.2.116
+  storageClass: 
+    use: true
+    name: "efs-sc"

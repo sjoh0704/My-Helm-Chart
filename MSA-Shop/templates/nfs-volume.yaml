@@ -1,9 +1,9 @@
-
+{{ if .Values.volume.nfs.use }}
 # persistentvolume 
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nfs-user-pv
+  name:  user-pv
   labels:
     db: user
 spec:
@@ -14,13 +14,13 @@ spec:
   - ReadWriteMany
   nfs:
     path: "/data/mysql-user"
-    server: {{ .Values.nfs }}
+    server: {{ .Values.volume.nfs.ip }}
 ---
 
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nfs-product-pv
+  name:  product-pv
   labels:
     db: product
 spec:
@@ -31,13 +31,13 @@ spec:
   - ReadWriteMany
   nfs:
     path: "/data/mysql-product"
-    server: {{ .Values.nfs }}
+    server: {{ .Values.volume.nfs.ip }}
 ---
 
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nfs-order-pv
+  name:  order-pv
   labels:
     db: order
 spec:
@@ -48,14 +48,14 @@ spec:
   - ReadWriteMany
   nfs:
     path: "/data/mysql-order"
-    server: {{ .Values.nfs }}
+    server: {{ .Values.volume.nfs.ip }}
 
 ---
 
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: nfs-cart-pv
+  name:  cart-pv
   labels:
     db: cart
 spec:
@@ -66,7 +66,7 @@ spec:
   - ReadWriteMany
   nfs:
     path: "/data/mongo-cart"
-    server: {{ .Values.nfs }}
+    server: {{ .Values.volume.nfs.ip }}
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -82,13 +82,13 @@ spec:
   - ReadWriteMany
   nfs:
     path: "/data/mongo-rating"
-    server: {{ .Values.nfs }}
+    server: {{ .Values.volume.nfs.ip }}
 ---
 # persistentVolumeClaim
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nfs-user-pvc
+  name:  user-pvc
 spec:
   accessModes:
   - ReadWriteMany
@@ -102,7 +102,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nfs-product-pvc
+  name:  product-pvc
 spec:
   accessModes:
   - ReadWriteMany
@@ -116,7 +116,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nfs-order-pvc
+  name:  order-pvc
 spec:
   accessModes:
   - ReadWriteMany
@@ -130,7 +130,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nfs-cart-pvc
+  name:  cart-pvc
 spec:
   accessModes:
   - ReadWriteMany
@@ -144,7 +144,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: nfs-rating-pvc
+  name:  rating-pvc
 spec:
   accessModes:
   - ReadWriteMany
@@ -154,3 +154,4 @@ spec:
   selector: 
     matchLabels: 
       db: rating
+{{ end }}

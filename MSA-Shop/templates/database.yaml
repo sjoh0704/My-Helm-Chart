@@ -87,7 +87,7 @@ spec:
       volumes:
       - name: mysql-persistent-storage
         persistentVolumeClaim:
-          claimName: nfs-user-pvc
+          claimName:  user-pvc
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -118,7 +118,7 @@ spec:
       volumes:
       - name: mysql-persistent-storage
         persistentVolumeClaim:
-          claimName: nfs-product-pvc
+          claimName:  product-pvc
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -149,7 +149,7 @@ spec:
       volumes:
       - name: mysql-persistent-storage
         persistentVolumeClaim:
-          claimName: nfs-order-pvc
+          claimName:  order-pvc
 
 
 ---
@@ -182,7 +182,7 @@ spec:
       volumes:
       - name: mongo-persistent-storage
         persistentVolumeClaim:
-          claimName: nfs-cart-pvc
+          claimName:  cart-pvc
 
 ---
 apiVersion: apps/v1
@@ -214,4 +214,4 @@ spec:
       volumes:
       - name: mongo-persistent-storage
         persistentVolumeClaim:
-          claimName: nfs-rating-pvc
+          claimName:  rating-pvc
